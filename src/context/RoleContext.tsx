@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, type ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { getUsers, createUser, updateUser, findUserByEmail, type User } from '../db/users';
 
 export type Role = 'Admin' | 'Procurement Officer' | 'Vendor' | 'Manager';
 
@@ -8,7 +9,7 @@ export interface UserProfile {
   name: string;
   role: Role;
   email: string;
-  profileImage: string;
+  profileImage: string | null;
   department: string;
   joiningDate: string;
   phone?: string;
@@ -31,71 +32,13 @@ interface RoleContextType {
   login: (email: string, password: string) => boolean;
   logout: () => void;
   updateUserProfile: (updates: Partial<UserProfile>) => void;
-  register: (name: string, email: string, role: Role, password: string) => boolean;
+  register: (name: string, email: string, role: Role, password: string, profileImage?: string | null) => boolean;
   profiles: UserProfile[];
   passwords: Record<string, string>;
   setProfiles: React.Dispatch<React.SetStateAction<UserProfile[]>>;
 }
 
 const RoleContext = createContext<RoleContextType | undefined>(undefined);
-
-export const demoUsers: UserProfile[] = [
-  {
-    id: "1",
-    employeeId: "EMP001",
-    name: "Admin User",
-    role: "Admin",
-    email: "admin@vendorbridge.com",
-    profileImage: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face",
-    department: "IT Administration",
-    joiningDate: "2024-03-15",
-    phone: "+1 (555) 019-1100",
-    address: "742 Evergreen Terrace, Sector 7G"
-  },
-  {
-    id: "2",
-    employeeId: "EMP002",
-    name: "Procurement Officer",
-    role: "Procurement Officer",
-    email: "officer@vendorbridge.com",
-    profileImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-    department: "Procurement & Sourcing",
-    joiningDate: "2025-01-10",
-    phone: "+1 (555) 019-2234",
-    address: "123 Main Street, Suite 400"
-  },
-  {
-    id: "3",
-    employeeId: "EMP003",
-    name: "Vendor User",
-    role: "Vendor",
-    email: "vendor@vendorbridge.com",
-    profileImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-    department: "External Vendor Partner",
-    joiningDate: "2026-02-18",
-    phone: "+1 (555) 019-3345",
-    address: "456 Commerce Parkway, Zone 3"
-  },
-  {
-    id: "4",
-    employeeId: "EMP004",
-    name: "Manager User",
-    role: "Manager",
-    email: "manager@vendorbridge.com",
-    profileImage: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&h=150&fit=crop&crop=face",
-    department: "Supply Chain Management",
-    joiningDate: "2023-08-01",
-    phone: "+1 (555) 019-4456",
-    address: "789 Executive Blvd, Floor 12"
-  }
-];
-
-const demoPasswords: Record<string, string> = {
-  'admin@vendorbridge.com': 'admin123',
-  'officer@vendorbridge.com': 'officer123',
-  'vendor@vendorbridge.com': 'vendor123',
-  'manager@vendorbridge.com': 'manager123'
-};
 
 const roleThemes: Record<Role, RoleTheme> = {
   Admin: {
@@ -131,31 +74,17 @@ const roleThemes: Record<Role, RoleTheme> = {
 const AUTH_STORAGE_KEY = 'vendor_bridge_auth_user';
 
 export const RoleProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [profiles, setProfiles] = useState<UserProfile[]>(() => {
-    const cached = localStorage.getItem('vendor_bridge_user_profiles');
-    if (cached) {
-      try {
-        return JSON.parse(cached);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    localStorage.setItem('vendor_bridge_user_profiles', JSON.stringify(demoUsers));
-    return demoUsers;
-  });
+  const [users, setUsers] = useState<User[]>(() => getUsers());
 
-  const [passwords, setPasswords] = useState<Record<string, string>>(() => {
-    const cached = localStorage.getItem('vendor_bridge_user_passwords');
-    if (cached) {
-      try {
-        return JSON.parse(cached);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    localStorage.setItem('vendor_bridge_user_passwords', JSON.stringify(demoPasswords));
-    return demoPasswords;
-  });
+  useEffect(() => {
+    const handleUpdate = () => {
+      setUsers(getUsers());
+    };
+    window.addEventListener('vendorbridge_users_update', handleUpdate);
+    return () => {
+      window.removeEventListener('vendorbridge_users_update', handleUpdate);
+    };
+  }, []);
 
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(() => {
     const cached = localStorage.getItem(AUTH_STORAGE_KEY);
@@ -163,15 +92,14 @@ export const RoleProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   });
 
   const isAuthenticated = currentUser !== null;
-  const currentRole: Role = currentUser ? currentUser.role : 'Admin';
-
-
+  const currentRole: Role = currentUser ? (currentUser.role as Role) : 'Admin';
 
   const login = (email: string, password: string): boolean => {
-    const matchedUser = profiles.find(u => u.email.toLowerCase() === email.toLowerCase());
-    if (matchedUser && passwords[matchedUser.email.toLowerCase()] === password) {
-      setCurrentUser(matchedUser);
-      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(matchedUser));
+    const matchedUser = findUserByEmail(email);
+    if (matchedUser && matchedUser.password === password) {
+      const { password: _, ...profile } = matchedUser;
+      setCurrentUser(profile as UserProfile);
+      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(profile));
       return true;
     }
     return false;
@@ -188,59 +116,47 @@ export const RoleProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setCurrentUser(updatedUser);
     localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(updatedUser));
 
-    const updatedProfiles = profiles.map(p => p.id === currentUser.id ? updatedUser : p);
-    setProfiles(updatedProfiles);
-    localStorage.setItem('vendor_bridge_user_profiles', JSON.stringify(updatedProfiles));
+    // Also update in localStorage vendorbridge_users
+    updateUser(currentUser.id, updates as Partial<User>);
   };
 
-  const register = (name: string, email: string, role: Role, passwordVal: string): boolean => {
-    const emailLower = email.toLowerCase();
-    if (profiles.some(p => p.email.toLowerCase() === emailLower)) {
-      return false; // User already exists
+  const register = (name: string, email: string, role: Role, passwordVal: string, profileImage?: string | null): boolean => {
+    try {
+      createUser({
+        name,
+        email,
+        role: role as any,
+        password: passwordVal,
+        profileImage: profileImage || null,
+      });
+      return true;
+    } catch (e) {
+      console.error(e);
+      return false;
     }
+  };
 
-    const avatar = role === 'Admin' 
-      ? "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face"
-      : role === 'Procurement Officer'
-      ? "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face"
-      : role === 'Vendor'
-      ? "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face"
-      : "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&h=150&fit=crop&crop=face";
+  const profiles: UserProfile[] = users
+    .filter(u => u.role !== 'Approver') // filter out approver if not in Role context
+    .map(({ password: _, ...p }) => p as UserProfile);
 
-    const maxEmpNum = profiles.reduce((max, p) => {
-      const num = parseInt(p.employeeId.replace('EMP', ''), 10);
-      return !isNaN(num) && num > max ? num : max;
-    }, 0);
-    const nextEmpId = `EMP${String(maxEmpNum + 1).padStart(3, '0')}`;
+  const passwords: Record<string, string> = users.reduce((acc, u) => {
+    if (u.password) {
+      acc[u.email.toLowerCase()] = u.password;
+    }
+    return acc;
+  }, {} as Record<string, string>);
 
-    const newProfile: UserProfile = {
-      id: String(profiles.length + 1),
-      employeeId: nextEmpId,
-      name,
-      role,
-      email: emailLower,
-      profileImage: avatar,
-      department: role === 'Admin' 
-        ? 'IT Administration' 
-        : role === 'Procurement Officer' 
-        ? 'Procurement & Sourcing' 
-        : role === 'Vendor' 
-        ? 'External Vendor Partner' 
-        : 'Supply Chain Management',
-      joiningDate: new Date().toISOString().split('T')[0],
-      phone: '',
-      address: ''
-    };
-
-    const updatedProfiles = [...profiles, newProfile];
-    setProfiles(updatedProfiles);
-    localStorage.setItem('vendor_bridge_user_profiles', JSON.stringify(updatedProfiles));
-
-    const updatedPasswords = { ...passwords, [emailLower]: passwordVal };
-    setPasswords(updatedPasswords);
-    localStorage.setItem('vendor_bridge_user_passwords', JSON.stringify(updatedPasswords));
-
-    return true;
+  const setProfiles: React.Dispatch<React.SetStateAction<UserProfile[]>> = (
+    value: React.SetStateAction<UserProfile[]>
+  ) => {
+    const updated = typeof value === 'function' ? value(profiles) : value;
+    const updatedUsers = users.map(u => {
+      const match = updated.find(p => p.id === u.id);
+      return match ? { ...u, ...match } : u;
+    });
+    localStorage.setItem('vendorbridge_users', JSON.stringify(updatedUsers));
+    window.dispatchEvent(new Event('vendorbridge_users_update'));
   };
 
   const theme = roleThemes[currentRole];
@@ -249,7 +165,7 @@ export const RoleProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const user = currentUser || profiles[0];
 
   return (
-    <RoleContext.Provider value={{ currentRole, user, theme, isAuthenticated, login, logout, updateUserProfile, register, profiles, passwords }}>
+    <RoleContext.Provider value={{ currentRole, user, theme, isAuthenticated, login, logout, updateUserProfile, register, profiles, passwords, setProfiles }}>
       {children}
     </RoleContext.Provider>
   );
