@@ -19,7 +19,7 @@ export interface UserProfile {
 interface AuthContextType {
   currentUser: UserProfile | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => boolean;
+  login: (email: string, password: string, rememberMe?: boolean) => boolean;
   logout: () => void;
   profiles: UserProfile[];
   passwords: Record<string, string>;
@@ -27,7 +27,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const AUTH_STORAGE_KEY = 'vendor_bridge_auth_user';
+const AUTH_STORAGE_KEY = 'vendorbridge_current_user';
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [users, setUsers] = useState<User[]>(() => getUsers());
@@ -43,18 +43,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []);
 
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(() => {
-    const cached = localStorage.getItem(AUTH_STORAGE_KEY);
-    return cached ? JSON.parse(cached) as UserProfile : null;
+    const localCached = localStorage.getItem(AUTH_STORAGE_KEY);
+    if (localCached) return JSON.parse(localCached) as UserProfile;
+    const sessionCached = sessionStorage.getItem(AUTH_STORAGE_KEY);
+    return sessionCached ? JSON.parse(sessionCached) as UserProfile : null;
   });
 
   const isAuthenticated = currentUser !== null;
 
-  const login = (email: string, password: string): boolean => {
+  const login = (email: string, password: string, rememberMe: boolean = true): boolean => {
     const matchedUser = findUserByEmail(email);
     if (matchedUser && matchedUser.password === password) {
       const { password: _, ...profile } = matchedUser;
       setCurrentUser(profile as UserProfile);
-      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(profile));
+      if (rememberMe) {
+        localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(profile));
+        sessionStorage.removeItem(AUTH_STORAGE_KEY);
+      } else {
+        sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(profile));
+        localStorage.removeItem(AUTH_STORAGE_KEY);
+      }
       return true;
     }
     return false;
@@ -63,6 +71,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const logout = () => {
     setCurrentUser(null);
     localStorage.removeItem(AUTH_STORAGE_KEY);
+    sessionStorage.removeItem(AUTH_STORAGE_KEY);
   };
 
   const profiles: UserProfile[] = users.map(({ password: _, ...p }) => p as UserProfile);

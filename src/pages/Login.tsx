@@ -23,12 +23,14 @@ export const Login: React.FC = () => {
   // Sign In form state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(true);
   
   // Registration form state
   const [regName, setRegName] = useState('');
   const [regEmail, setRegEmail] = useState('');
   const [regPassword, setRegPassword] = useState('');
   const [regRole, setRegRole] = useState<Role>('Procurement Officer');
+  const [regPhoto, setRegPhoto] = useState<string | null>(null);
 
   // Notifications
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +41,7 @@ export const Login: React.FC = () => {
     setError(null);
     setSuccessMsg(null);
 
-    const success = login(email, password);
+    const success = login(email, password, rememberMe);
     if (success) {
       addActivityLog({
         user: email,
@@ -72,7 +74,7 @@ export const Login: React.FC = () => {
       return;
     }
 
-    const created = register(regName, regEmail, regRole, regPassword);
+    const created = register(regName, regEmail, regRole, regPassword, regPhoto);
     if (created) {
       addActivityLog({
         user: regEmail,
@@ -94,6 +96,7 @@ export const Login: React.FC = () => {
       setRegEmail('');
       setRegPassword('');
       setRegRole('Procurement Officer');
+      setRegPhoto(null);
     } else {
       setError('Email address is already registered.');
     }
@@ -211,6 +214,19 @@ export const Login: React.FC = () => {
                   className="w-full pl-9 pr-4 py-2.5 text-xs rounded-xl glass-input border border-white/10 bg-slate-955 text-white outline-none focus:border-indigo-500/50 transition-all"
                 />
               </div>
+            </div>
+
+            {/* Remember Me Checkbox */}
+            <div className="flex items-center justify-between text-xs mt-2 select-none">
+              <label className="flex items-center gap-2 cursor-pointer text-slate-400 hover:text-white">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="w-4 h-4 rounded border-white/10 bg-slate-955 accent-indigo-500 cursor-pointer"
+                />
+                Remember Me
+              </label>
             </div>
 
             <button

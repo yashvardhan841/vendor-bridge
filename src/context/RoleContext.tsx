@@ -29,7 +29,7 @@ interface RoleContextType {
   user: UserProfile; // Non-nullable for type-safety across page modules
   theme: RoleTheme;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => boolean;
+  login: (email: string, password: string, rememberMe?: boolean) => boolean;
   logout: () => void;
   updateUserProfile: (updates: Partial<UserProfile>) => void;
   register: (name: string, email: string, role: Role, password: string, profileImage?: string | null) => boolean;
@@ -71,7 +71,7 @@ const roleThemes: Record<Role, RoleTheme> = {
   },
 };
 
-const AUTH_STORAGE_KEY = 'vendor_bridge_auth_user';
+const AUTH_STORAGE_KEY = 'vendorbridge_current_user';
 
 export const RoleProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [users, setUsers] = useState<User[]>(() => getUsers());
@@ -87,19 +87,27 @@ export const RoleProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []);
 
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(() => {
-    const cached = localStorage.getItem(AUTH_STORAGE_KEY);
-    return cached ? JSON.parse(cached) : null;
+    const localCached = localStorage.getItem(AUTH_STORAGE_KEY);
+    if (localCached) return JSON.parse(localCached);
+    const sessionCached = sessionStorage.getItem(AUTH_STORAGE_KEY);
+    return sessionCached ? JSON.parse(sessionCached) : null;
   });
 
   const isAuthenticated = currentUser !== null;
   const currentRole: Role = currentUser ? (currentUser.role as Role) : 'Admin';
 
-  const login = (email: string, password: string): boolean => {
+  const login = (email: string, password: string, rememberMe: boolean = true): boolean => {
     const matchedUser = findUserByEmail(email);
     if (matchedUser && matchedUser.password === password) {
       const { password: _, ...profile } = matchedUser;
       setCurrentUser(profile as UserProfile);
-      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(profile));
+      if (rememberMe) {
+        localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(profile));
+        sessionStorage.removeItem(AUTH_STORAGE_KEY);
+      } else {
+        sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(profile));
+        localStorage.removeItem(AUTH_STORAGE_KEY);
+      }
       return true;
     }
     return false;
@@ -108,13 +116,19 @@ export const RoleProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const logout = () => {
     setCurrentUser(null);
     localStorage.removeItem(AUTH_STORAGE_KEY);
+    sessionStorage.removeItem(AUTH_STORAGE_KEY);
   };
 
   const updateUserProfile = (updates: Partial<UserProfile>) => {
     if (!currentUser) return;
     const updatedUser = { ...currentUser, ...updates };
     setCurrentUser(updatedUser);
-    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(updatedUser));
+    
+    if (localStorage.getItem(AUTH_STORAGE_KEY)) {
+      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(updatedUser));
+    } else if (sessionStorage.getItem(AUTH_STORAGE_KEY)) {
+      sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(updatedUser));
+    }
 
     // Also update in localStorage vendorbridge_users
     updateUser(currentUser.id, updates as Partial<User>);
