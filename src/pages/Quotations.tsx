@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRole } from '../context/RoleContext';
+import { AppSelect } from '../components/AppSelect';
 import { 
   useQuotations, 
   useRFQs, 
@@ -131,20 +132,18 @@ export const Quotations: React.FC = () => {
               </h3>
             </div>
 
-            {/* RFQ Selector Dropdown */}
             <div className="flex items-center gap-2 text-xs">
               <span className="text-slate-400 uppercase font-semibold">Select RFQ:</span>
-              <select
+              <AppSelect
                 value={selectedRfqId}
                 onChange={(e) => setSelectedRfqId(e.target.value)}
-                className="px-3 py-2 text-xs rounded-lg bg-slate-800 text-white border border-slate-600 focus:border-indigo-500/50 transition-all cursor-pointer outline-none"
               >
                 {rfqs.map(rfq => (
                   <option className="bg-slate-800 text-white" key={rfq.id} value={rfq.id}>
                     {rfq.id} - {rfq.title.slice(0, 20)}... ({rfq.status})
                   </option>
                 ))}
-              </select>
+              </AppSelect>
             </div>
           </div>
 

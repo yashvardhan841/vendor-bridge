@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRole } from '../context/RoleContext';
+import { AppSelect } from '../components/AppSelect';
 import { 
   useVendors, 
   addVendor, 
@@ -355,18 +356,16 @@ export const Vendors: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Compliance Status</label>
-                  <select 
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value as Vendor['status'])}
-                    className="w-full px-3 py-2 text-xs rounded-lg bg-slate-800 text-white border border-slate-600 focus:border-indigo-500/50 transition-all cursor-pointer outline-none"
-                  >
-                    <option className="bg-slate-800 text-white" value="Compliant">Compliant</option>
-                    <option className="bg-slate-800 text-white" value="Pending Review">Pending Review</option>
-                    <option className="bg-slate-800 text-white" value="Suspended">Suspended</option>
-                  </select>
-                </div>
+                <AppSelect
+                  label="Compliance Status"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value as Vendor['status'])}
+                  className="w-full"
+                >
+                  <option className="bg-slate-800 text-white" value="Compliant">Compliant</option>
+                  <option className="bg-slate-800 text-white" value="Pending Review">Pending Review</option>
+                  <option className="bg-slate-800 text-white" value="Suspended">Suspended</option>
+                </AppSelect>
 
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Rating Rating ({rating.toFixed(1)} / 5.0)</label>

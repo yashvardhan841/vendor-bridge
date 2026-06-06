@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRole, type Role } from '../context/RoleContext';
 import { addActivityLog } from '../db/db';
+import { AppSelect } from '../components/AppSelect';
 import { 
   Shield, 
   Mail, 
@@ -263,16 +264,16 @@ export const Login: React.FC = () => {
               </label>
               <div className="relative">
                 <Building2 className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
-                <select
+                <AppSelect
                   value={regRole}
                   onChange={(e) => setRegRole(e.target.value as Role)}
-                  className="w-full pl-9 pr-4 py-2.5 text-xs rounded-lg bg-slate-800 text-white border border-slate-600 focus:border-indigo-500/50 transition-all cursor-pointer outline-none"
+                  className="w-full pl-9 pr-4 py-2.5"
                 >
                   <option className="bg-slate-800 text-white" value="Admin">Admin</option>
                   <option className="bg-slate-800 text-white" value="Procurement Officer">Procurement Officer</option>
                   <option className="bg-slate-800 text-white" value="Vendor">Vendor</option>
                   <option className="bg-slate-800 text-white" value="Manager">Manager</option>
-                </select>
+                </AppSelect>
               </div>
             </div>
 

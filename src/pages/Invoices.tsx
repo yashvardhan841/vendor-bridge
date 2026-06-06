@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRole } from '../context/RoleContext';
+import { AppSelect } from '../components/AppSelect';
 import { 
   useInvoices, 
   usePurchaseOrders, 
@@ -777,22 +778,20 @@ export const Invoices: React.FC = () => {
             </h3>
 
             <form onSubmit={handleUploadInvoice} className="space-y-4">
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Select Purchase Order Ref.</label>
-                <select 
-                  value={selectedPoId}
-                  onChange={(e) => setSelectedPoId(e.target.value)}
-                  required
-                  className="w-full px-3 py-2 text-xs rounded-lg bg-slate-800 text-white border border-slate-600 focus:border-indigo-500/50 transition-all cursor-pointer outline-none"
-                >
-                  <option className="bg-slate-800 text-white" value="">-- Choose Contract --</option>
-                  {vendorPOs.map(po => (
-                    <option className="bg-slate-800 text-white" key={po.id} value={po.id}>
-                      {po.id} - Value: {po.value} (${po.itemName || 'Supplies'})
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <AppSelect
+                label="Select Purchase Order Ref."
+                value={selectedPoId}
+                onChange={(e) => setSelectedPoId(e.target.value)}
+                required
+                className="w-full"
+              >
+                <option className="bg-slate-800 text-white" value="">-- Choose Contract --</option>
+                {vendorPOs.map(po => (
+                  <option className="bg-slate-800 text-white" key={po.id} value={po.id}>
+                    {po.id} - Value: {po.value} (${po.itemName || 'Supplies'})
+                  </option>
+                ))}
+              </AppSelect>
 
               {selectedPO && (
                 <div className="p-3 rounded-lg bg-white/3 border border-white/5 space-y-2 text-xs text-slate-300">

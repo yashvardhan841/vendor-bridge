@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRole } from '../context/RoleContext';
+import { AppSelect } from '../components/AppSelect';
 import { 
   useRFQs, 
   useVendors, 
@@ -274,10 +275,9 @@ export const RFQs: React.FC = () => {
           {currentRole !== 'Vendor' && (
             <div className="flex items-center gap-2">
               <span className="text-slate-500">Status:</span>
-              <select
+              <AppSelect
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-3 py-2 text-xs rounded-lg bg-slate-800 text-white border border-slate-600 focus:border-indigo-500/50 transition-all cursor-pointer outline-none"
               >
                 <option className="bg-slate-800 text-white" value="All">All Statuses</option>
                 <option className="bg-slate-800 text-white" value="Draft">Draft</option>
@@ -285,22 +285,21 @@ export const RFQs: React.FC = () => {
                 <option className="bg-slate-800 text-white" value="Quotations Received">Quotations Received</option>
                 <option className="bg-slate-800 text-white" value="Completed">Completed</option>
                 <option className="bg-slate-800 text-white" value="Closed">Closed</option>
-              </select>
+              </AppSelect>
             </div>
           )}
 
           <div className="flex items-center gap-2">
             <span className="text-slate-500">Dept:</span>
-            <select
+            <AppSelect
               value={deptFilter}
               onChange={(e) => setDeptFilter(e.target.value)}
-              className="px-3 py-2 text-xs rounded-lg bg-slate-800 text-white border border-slate-600 focus:border-indigo-500/50 transition-all cursor-pointer outline-none"
             >
               <option className="bg-slate-800 text-white" value="All">All Departments</option>
               {uniqueDepts.map(d => (
                 <option className="bg-slate-800 text-white" key={d} value={d}>{d}</option>
               ))}
-            </select>
+            </AppSelect>
           </div>
         </div>
       </div>
@@ -528,20 +527,18 @@ export const RFQs: React.FC = () => {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Initial Status</label>
-                  <select 
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value as RFQ['status'])}
-                    className="w-full px-3 py-2 text-xs rounded-lg bg-slate-800 text-white border border-slate-600 focus:border-indigo-500/50 transition-all cursor-pointer outline-none"
-                  >
-                    <option className="bg-slate-800 text-white" value="Draft">Draft</option>
-                    <option className="bg-slate-800 text-white" value="Published">Published</option>
-                    <option className="bg-slate-800 text-white" value="Quotations Received">Quotations Received</option>
-                    <option className="bg-slate-800 text-white" value="Completed">Completed</option>
-                    <option className="bg-slate-800 text-white" value="Closed">Closed</option>
-                  </select>
-                </div>
+                <AppSelect
+                  label="Initial Status"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value as RFQ['status'])}
+                  className="w-full"
+                >
+                  <option className="bg-slate-800 text-white" value="Draft">Draft</option>
+                  <option className="bg-slate-800 text-white" value="Published">Published</option>
+                  <option className="bg-slate-800 text-white" value="Quotations Received">Quotations Received</option>
+                  <option className="bg-slate-800 text-white" value="Completed">Completed</option>
+                  <option className="bg-slate-800 text-white" value="Closed">Closed</option>
+                </AppSelect>
               </div>
 
               {/* Assigned Vendors Multi-select checklist */}
