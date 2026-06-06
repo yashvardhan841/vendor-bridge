@@ -277,12 +277,14 @@ export const RFQs: React.FC = () => {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-2 py-1 text-[11px] rounded-md glass-input bg-slate-900 border-white/8 text-white focus:outline-none"
+                className="px-3 py-2 text-xs rounded-lg bg-slate-800 text-white border border-slate-600 focus:border-indigo-500/50 transition-all cursor-pointer outline-none"
               >
-                <option value="All">All Statuses</option>
-                <option value="Draft">Draft</option>
-                <option value="Published">Published</option>
-                <option value="Closed">Closed</option>
+                <option className="bg-slate-800 text-white" value="All">All Statuses</option>
+                <option className="bg-slate-800 text-white" value="Draft">Draft</option>
+                <option className="bg-slate-800 text-white" value="Published">Published</option>
+                <option className="bg-slate-800 text-white" value="Quotations Received">Quotations Received</option>
+                <option className="bg-slate-800 text-white" value="Completed">Completed</option>
+                <option className="bg-slate-800 text-white" value="Closed">Closed</option>
               </select>
             </div>
           )}
@@ -292,11 +294,11 @@ export const RFQs: React.FC = () => {
             <select
               value={deptFilter}
               onChange={(e) => setDeptFilter(e.target.value)}
-              className="px-2 py-1 text-[11px] rounded-md glass-input bg-slate-900 border-white/8 text-white focus:outline-none"
+              className="px-3 py-2 text-xs rounded-lg bg-slate-800 text-white border border-slate-600 focus:border-indigo-500/50 transition-all cursor-pointer outline-none"
             >
-              <option value="All">All Departments</option>
+              <option className="bg-slate-800 text-white" value="All">All Departments</option>
               {uniqueDepts.map(d => (
-                <option key={d} value={d}>{d}</option>
+                <option className="bg-slate-800 text-white" key={d} value={d}>{d}</option>
               ))}
             </select>
           </div>
@@ -324,6 +326,8 @@ export const RFQs: React.FC = () => {
                       ${rfq.status === 'Published' && 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'}
                       ${rfq.status === 'Draft' && 'bg-slate-500/10 text-slate-400 border border-slate-500/20'}
                       ${rfq.status === 'Closed' && 'bg-red-500/10 text-red-400 border border-red-500/20'}
+                      ${rfq.status === 'Quotations Received' && 'bg-purple-500/10 text-purple-400 border border-purple-500/20'}
+                      ${rfq.status === 'Completed' && 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'}
                     `}
                   >
                     {rfq.status}
@@ -529,11 +533,13 @@ export const RFQs: React.FC = () => {
                   <select 
                     value={status}
                     onChange={(e) => setStatus(e.target.value as RFQ['status'])}
-                    className="w-full px-3 py-2 text-xs rounded-lg glass-input bg-slate-900 border-white/10 text-white"
+                    className="w-full px-3 py-2 text-xs rounded-lg bg-slate-800 text-white border border-slate-600 focus:border-indigo-500/50 transition-all cursor-pointer outline-none"
                   >
-                    <option value="Draft">Draft</option>
-                    <option value="Published">Published</option>
-                    <option value="Closed">Closed</option>
+                    <option className="bg-slate-800 text-white" value="Draft">Draft</option>
+                    <option className="bg-slate-800 text-white" value="Published">Published</option>
+                    <option className="bg-slate-800 text-white" value="Quotations Received">Quotations Received</option>
+                    <option className="bg-slate-800 text-white" value="Completed">Completed</option>
+                    <option className="bg-slate-800 text-white" value="Closed">Closed</option>
                   </select>
                 </div>
               </div>

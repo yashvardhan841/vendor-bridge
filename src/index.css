@@ -48,6 +48,11 @@
   box-shadow: 0 0 10px 0 rgba(99, 102, 241, 0.2);
 }
 
+select option {
+  background-color: #1e293b;
+  color: #ffffff;
+}
+
 .glass-card-glow-purple {
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 35px -10px rgba(168, 85, 247, 0.25);
 }

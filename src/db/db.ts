@@ -24,7 +24,7 @@ export interface RFQ {
   assignedVendors: string[]; // array of vendor names (e.g. Apex Solutions Corp)
   dept: string;
   count: number;
-  status: 'Draft' | 'Published' | 'Closed';
+  status: 'Draft' | 'Published' | 'Quotations Received' | 'Completed' | 'Closed';
 }
 
 export interface Quotation {

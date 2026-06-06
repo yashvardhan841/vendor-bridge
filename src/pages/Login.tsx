@@ -266,7 +266,7 @@ export const Login: React.FC = () => {
                 <select
                   value={regRole}
                   onChange={(e) => setRegRole(e.target.value as Role)}
-                  className="w-full pl-9 pr-4 py-2.5 text-xs rounded-lg bg-slate-800 text-white border border-slate-600 focus:border-indigo-500/50 transition-all cursor-pointer"
+                  className="w-full pl-9 pr-4 py-2.5 text-xs rounded-lg bg-slate-800 text-white border border-slate-600 focus:border-indigo-500/50 transition-all cursor-pointer outline-none"
                 >
                   <option className="bg-slate-800 text-white" value="Admin">Admin</option>
                   <option className="bg-slate-800 text-white" value="Procurement Officer">Procurement Officer</option>

@@ -360,11 +360,11 @@ export const Vendors: React.FC = () => {
                   <select 
                     value={status}
                     onChange={(e) => setStatus(e.target.value as Vendor['status'])}
-                    className="w-full px-3 py-2 text-xs rounded-lg glass-input bg-slate-900 border-white/10 text-white"
+                    className="w-full px-3 py-2 text-xs rounded-lg bg-slate-800 text-white border border-slate-600 focus:border-indigo-500/50 transition-all cursor-pointer outline-none"
                   >
-                    <option value="Compliant">Compliant</option>
-                    <option value="Pending Review">Pending Review</option>
-                    <option value="Suspended">Suspended</option>
+                    <option className="bg-slate-800 text-white" value="Compliant">Compliant</option>
+                    <option className="bg-slate-800 text-white" value="Pending Review">Pending Review</option>
+                    <option className="bg-slate-800 text-white" value="Suspended">Suspended</option>
                   </select>
                 </div>
 

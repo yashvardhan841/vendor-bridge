@@ -783,11 +783,11 @@ export const Invoices: React.FC = () => {
                   value={selectedPoId}
                   onChange={(e) => setSelectedPoId(e.target.value)}
                   required
-                  className="w-full px-3 py-2 text-xs rounded-lg glass-input bg-slate-900 border-white/10 text-white"
+                  className="w-full px-3 py-2 text-xs rounded-lg bg-slate-800 text-white border border-slate-600 focus:border-indigo-500/50 transition-all cursor-pointer outline-none"
                 >
-                  <option value="">-- Choose Contract --</option>
+                  <option className="bg-slate-800 text-white" value="">-- Choose Contract --</option>
                   {vendorPOs.map(po => (
-                    <option key={po.id} value={po.id}>
+                    <option className="bg-slate-800 text-white" key={po.id} value={po.id}>
                       {po.id} - Value: {po.value} (${po.itemName || 'Supplies'})
                     </option>
                   ))}

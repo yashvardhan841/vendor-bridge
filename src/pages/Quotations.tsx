@@ -137,10 +137,10 @@ export const Quotations: React.FC = () => {
               <select
                 value={selectedRfqId}
                 onChange={(e) => setSelectedRfqId(e.target.value)}
-                className="px-2 py-1 text-xs rounded-lg glass-input bg-slate-900 border-white/10 text-white"
+                className="px-3 py-2 text-xs rounded-lg bg-slate-800 text-white border border-slate-600 focus:border-indigo-500/50 transition-all cursor-pointer outline-none"
               >
                 {rfqs.map(rfq => (
-                  <option key={rfq.id} value={rfq.id}>
+                  <option className="bg-slate-800 text-white" key={rfq.id} value={rfq.id}>
                     {rfq.id} - {rfq.title.slice(0, 20)}... ({rfq.status})
                   </option>
                 ))}
