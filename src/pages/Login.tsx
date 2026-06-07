@@ -113,7 +113,7 @@ export const Login: React.FC = () => {
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-purple-500/10 filter blur-3xl" />
 
       {/* Login Card */}
-      <div className="w-full max-w-md p-8 rounded-3xl glass-panel border border-white/10 bg-slate-900/90 shadow-2xl space-y-6 relative z-10 text-left">
+      <div className="w-full max-w-md p-8 rounded-3xl solid-panel shadow-2xl space-y-6 relative z-10 text-left">
         
         {/* Header Logo */}
         <div className="flex flex-col items-center text-center space-y-2">

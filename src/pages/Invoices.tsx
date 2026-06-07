@@ -614,7 +614,7 @@ export const Invoices: React.FC = () => {
       {/* Invoice Details Overlay Modal */}
       {selectedInvoice && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="max-w-2xl w-full rounded-2xl glass-panel border border-white/12 bg-slate-900/95 shadow-2xl p-6 relative max-h-[90vh] overflow-y-auto space-y-6 animate-in zoom-in-95 duration-200 text-left">
+          <div className="max-w-2xl w-full rounded-2xl solid-panel shadow-2xl p-6 relative max-h-[90vh] overflow-y-auto space-y-6 animate-in zoom-in-95 duration-200 text-left">
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-white/8 pb-4">
               <div>
@@ -764,7 +764,7 @@ export const Invoices: React.FC = () => {
       {/* Auto Invoice Generation Glassmorphic Modal */}
       {showUploadModal && currentRole === 'Vendor' && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="w-full max-w-md p-6 rounded-2xl glass-panel border border-white/15 shadow-2xl relative flex flex-col text-left">
+          <div className="w-full max-w-md p-6 rounded-2xl solid-panel shadow-2xl relative flex flex-col text-left">
             <button 
               onClick={() => setShowUploadModal(false)}
               className="absolute top-4 right-4 p-1 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
@@ -848,7 +848,7 @@ export const Invoices: React.FC = () => {
       {/* Simulated Email Sending Stepper Overlay */}
       {simulatedEmailInvoice && emailStep > 0 && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="w-full max-w-md p-6 rounded-2xl glass-panel border border-white/15 bg-slate-900/95 shadow-2xl relative flex flex-col text-center space-y-4">
+          <div className="w-full max-w-md p-6 rounded-2xl solid-panel shadow-2xl relative flex flex-col text-center space-y-4">
             
             <h4 className="text-sm font-bold uppercase tracking-wider text-indigo-400">
               SMTP Invoice Dispatch Simulation

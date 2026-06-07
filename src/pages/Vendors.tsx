@@ -278,7 +278,7 @@ export const Vendors: React.FC = () => {
       {/* Create / Edit Vendor Glassmorphic Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="w-full max-w-md p-6 rounded-2xl glass-panel border border-white/15 shadow-2xl relative flex flex-col text-left">
+          <div className="w-full max-w-md p-6 rounded-2xl solid-panel shadow-2xl relative flex flex-col text-left">
             <button 
               onClick={() => setShowModal(false)}
               className="absolute top-4 right-4 p-1 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors"

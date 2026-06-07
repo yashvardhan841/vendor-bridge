@@ -129,7 +129,7 @@ export const Header: React.FC<HeaderProps> = ({ setIsMobileOpen }) => {
           </button>
 
           {showNotifications && (
-            <div className="absolute right-0 mt-3 w-80 rounded-xl glass-panel border border-white/10 shadow-2xl p-2 z-50">
+            <div className="absolute right-0 mt-3 w-80 rounded-xl solid-panel shadow-2xl p-2 z-50">
               <div className="flex items-center justify-between px-3 py-2 border-b border-white/8">
                 <span className="text-xs font-bold text-white uppercase tracking-wider">Notifications</span>
                 {unreadCount > 0 && (
@@ -195,7 +195,7 @@ export const Header: React.FC<HeaderProps> = ({ setIsMobileOpen }) => {
           </button>
 
           {showProfileMenu && (
-            <div className="absolute right-0 top-12 mt-2 w-60 rounded-xl glass-panel border border-white/10 shadow-2xl p-2.5 z-50 text-left">
+            <div className="absolute right-0 top-12 mt-2 w-60 rounded-xl solid-panel shadow-2xl p-2.5 z-50 text-left">
               <div className="px-3 py-2 border-b border-white/8">
                 <div className="text-xs font-bold text-white">{user.name}</div>
                 <div className="text-[9px] font-mono text-slate-500 mt-0.5">Emp ID: {user.employeeId}</div>
