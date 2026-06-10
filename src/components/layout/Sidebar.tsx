@@ -38,7 +38,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen, setIsMobileOpen 
   ];
 
   const sidebarClasses = `
-    fixed top-0 left-0 z-40 h-screen transition-all duration-300 ease-in-out glass-panel border-r border-white/8
+    fixed top-0 left-0 z-50 h-screen transition-all duration-300 ease-in-out solid-sidebar
     ${isCollapsed ? 'w-20' : 'w-64'} 
     ${isMobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
   `;
@@ -48,7 +48,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen, setIsMobileOpen 
       {/* Mobile Backdrop */}
       {isMobileOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm md:hidden"
+          className="fixed inset-0 z-40 solid-overlay md:hidden"
           onClick={() => setIsMobileOpen(false)}
         />
       )}

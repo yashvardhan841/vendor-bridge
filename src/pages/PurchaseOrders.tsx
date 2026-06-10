@@ -372,7 +372,7 @@ export const PurchaseOrders: React.FC = () => {
       </div>
 
       {selectedPO && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 solid-overlay animate-in fade-in duration-200">
           <div className="max-w-3xl w-full rounded-2xl solid-panel shadow-2xl p-6 relative max-h-[90vh] overflow-y-auto space-y-6 animate-in zoom-in-95 duration-200 text-left">
             
             {/* Modal Header */}

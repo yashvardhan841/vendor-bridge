@@ -218,3 +218,148 @@ select option {
   }
 }
 
+/* Reusable solid sidebar layout */
+.solid-sidebar {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  border-right: 1px solid #e5e7eb !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.solid-sidebar .text-white {
+  color: #111827 !important;
+}
+.solid-sidebar .text-transparent {
+  background-image: none !important;
+  color: #111827 !important;
+  -webkit-text-fill-color: #111827 !important;
+}
+.solid-sidebar .text-slate-400 {
+  color: #4b5563 !important;
+}
+.solid-sidebar .hover\:text-white:hover {
+  color: #111827 !important;
+}
+.solid-sidebar .hover\:bg-white\/5:hover {
+  background-color: #f3f4f6 !important;
+}
+.solid-sidebar .bg-white\/10 {
+  background-color: #e5e7eb !important;
+  color: #111827 !important;
+}
+.solid-sidebar .bg-white\/5 {
+  background-color: #f3f4f6 !important;
+  border-color: #e5e7eb !important;
+}
+.solid-sidebar .border-white\/8,
+.solid-sidebar .border-white\/10 {
+  border-color: #e5e7eb !important;
+}
+
+/* Reusable solid header layout */
+.solid-header {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.solid-header .text-white {
+  color: #111827 !important;
+}
+.solid-header .text-slate-400 {
+  color: #4b5563 !important;
+}
+.solid-header .hover\:text-white:hover {
+  color: #111827 !important;
+}
+.solid-header .hover\:bg-white\/5:hover {
+  background-color: #f3f4f6 !important;
+}
+.solid-header input.glass-input {
+  background-color: #f3f4f6 !important;
+  color: #111827 !important;
+  border-color: #d1d5db !important;
+}
+.solid-header input.glass-input::placeholder {
+  color: #9ca3af !important;
+}
+
+/* Reusable fully opaque overlay/backdrop */
+.solid-overlay {
+  background-color: #ffffff !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .solid-sidebar {
+    background-color: #111827 !important;
+    color: #f3f4f6 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
+  }
+  .solid-sidebar .text-white {
+    color: #ffffff !important;
+  }
+  .solid-sidebar .text-transparent {
+    background-image: linear-gradient(to right, #ffffff, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.5)) !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+  .solid-sidebar .text-slate-400 {
+    color: #94a3b8 !important;
+  }
+  .solid-sidebar .hover\:text-white:hover {
+    color: #ffffff !important;
+  }
+  .solid-sidebar .hover\:bg-white\/5:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+  }
+  .solid-sidebar .bg-white\/10 {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+  }
+  .solid-sidebar .bg-white\/5 {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  .solid-sidebar .border-white\/8,
+  .solid-sidebar .border-white\/10 {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .solid-header {
+    background-color: #111827 !important;
+    color: #f3f4f6 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+  .solid-header .text-white {
+    color: #ffffff !important;
+  }
+  .solid-header .text-slate-400 {
+    color: #94a3b8 !important;
+  }
+  .solid-header .hover\:text-white:hover {
+    color: #ffffff !important;
+  }
+  .solid-header .hover\:bg-white\/5:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+  }
+  .solid-header input.glass-input {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .solid-overlay {
+    background-color: #111827 !important;
+  }
+}
+
+

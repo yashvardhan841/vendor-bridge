@@ -87,7 +87,7 @@ export const Header: React.FC<HeaderProps> = ({ setIsMobileOpen }) => {
   };
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between h-16 px-4 border-b md:px-6 glass-panel border-white/8 backdrop-blur-md">
+    <header className="sticky top-0 z-30 flex items-center justify-between h-16 px-4 border-b md:px-6 solid-header">
       {/* Left section: Drawer trigger & title */}
       <div className="flex items-center gap-3">
         <button

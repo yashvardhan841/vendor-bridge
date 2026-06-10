@@ -437,7 +437,7 @@ export const RFQs: React.FC = () => {
 
       {/* Create / Edit RFQ Glassmorphic Modal */}
       {showFormModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 solid-overlay overflow-y-auto animate-in fade-in duration-200">
           <div className="w-full max-w-lg p-6 rounded-2xl solid-panel shadow-2xl relative flex flex-col text-left my-8">
             <button 
               onClick={() => setShowFormModal(false)}
@@ -585,7 +585,7 @@ export const RFQs: React.FC = () => {
 
       {/* Submit Bid Proposal Modal (Vendor Role) */}
       {showBidModal && activeRFQ && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 solid-overlay animate-in fade-in duration-200">
           <div className="w-full max-w-md p-6 rounded-2xl solid-panel shadow-2xl relative flex flex-col text-left">
             <button 
               onClick={() => {
